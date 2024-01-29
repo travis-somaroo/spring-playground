@@ -2,8 +2,11 @@ package com.travis.spring.playground.model.ingredient;
 
 import com.travis.spring.playground.model.BaseEntity;
 import com.travis.spring.playground.model.recipe.Recipe;
+import com.travis.spring.playground.model.unit_of_measure.UnitOfMeasure;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -24,4 +27,7 @@ public class Ingredient extends BaseEntity {
 
     @ManyToOne
     private Recipe recipe;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    private UnitOfMeasure uom;
 }

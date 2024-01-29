@@ -1,6 +1,8 @@
 package com.travis.spring.playground.model.recipe;
 
 import com.travis.spring.playground.model.BaseEntity;
+import com.travis.spring.playground.model.category.Category;
+import com.travis.spring.playground.model.difficulty.Difficulty;
 import com.travis.spring.playground.model.ingredient.Ingredient;
 import com.travis.spring.playground.model.notes.Notes;
 import jakarta.persistence.*;
@@ -36,10 +38,13 @@ public class Recipe extends BaseEntity {
     private Byte[] image;
 
     /**
-     * Recipe object will get stored in a property called 'recipe' on Ingredient.
-     * This establishes a bidirectional relationship where Recipe is the owning side,
-     * and Ingredient is the inverse side. The mappedBy = "recipe" attribute indicates
-     * that the 'recipe' property in Ingredient is responsible for managing the association.
+     * String persists as the name, ordinal persists as the number either 0,1,2 for example.
+     */
+    @Enumerated(value = EnumType.STRING)
+    private Difficulty difficulty;
+
+    /**
+     * Recipe object will get stored in a property called 'recipe' on Ingredient, property name must match.
      */
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
     private Set<Ingredient> ingredients;
@@ -49,5 +54,11 @@ public class Recipe extends BaseEntity {
      */
     @OneToOne(cascade = CascadeType.ALL)
     private Notes notes;
+
+    @ManyToMany
+    @JoinTable(name = "recipe_category",
+        joinColumns = @JoinColumn(name = "recipe_id"),
+        inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category> categories;
 
 }
