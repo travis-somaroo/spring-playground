@@ -8,9 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SpringPlaygroundApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SpringPlaygroundApplication.class, args);
-		log.info("***** READY TO QUERY *****");
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SpringPlaygroundApplication.class, args);
+        log.info("***** READY TO QUERY *****");
+    }
 
 }

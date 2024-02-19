@@ -18,7 +18,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class Category extends BaseEntity {
 
-    private String name;
+    private String description;
 
     @ManyToMany(mappedBy = "categories")
     private Set<Recipe> recipes;
