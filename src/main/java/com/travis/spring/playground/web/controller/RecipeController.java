@@ -3,8 +3,6 @@ package com.travis.spring.playground.web.controller;
 import com.travis.spring.playground.model.recipe.Recipe;
 import com.travis.spring.playground.service.RecipeService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -12,7 +10,7 @@ import java.util.Set;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/recipe")
+@RequestMapping("api/recipes")
 public class RecipeController {
 
     private final RecipeService recipeService;
@@ -22,7 +20,7 @@ public class RecipeController {
         return recipeService.findAllRecipes();
     }
 
-    @GetMapping("{recipeId}")
+    @GetMapping("/{recipeId}")
     public Optional<Recipe> findRecipe(@PathVariable Long recipeId) {
         return recipeService.findById(recipeId);
     }

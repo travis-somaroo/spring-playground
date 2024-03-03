@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -47,7 +48,7 @@ public class Recipe extends BaseEntity {
      * Recipe object will get stored in a property called 'recipe' on Ingredient, property name must match.
      */
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
-    private Set<Ingredient> ingredients;
+    private Set<Ingredient> ingredients = new HashSet<>();
 
     /**
      * Recipes owns the cascading on notes.
@@ -59,6 +60,17 @@ public class Recipe extends BaseEntity {
     @JoinTable(name = "recipe_category",
         joinColumns = @JoinColumn(name = "recipe_id"),
         inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private Set<Category> categories;
+    private Set<Category> categories = new HashSet<>();
 
+
+    public void setNotes(Notes notes) {
+        if (notes != null) {
+            this.notes = notes;
+            notes.setRecipe(this);
+        }
+    }
+
+    public void addIngredient(Ingredient ingredient){
+        this.ingredients.add(ingredient);
+    }
 }

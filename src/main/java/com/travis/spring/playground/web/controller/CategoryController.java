@@ -17,7 +17,7 @@ public class CategoryController {
 
     @GetMapping
     public Category findByDescription(@RequestParam String description) {
-        return categoryRepository.findCategoriesByDescription(description)
+        return categoryRepository.findByDescription(description)
             .orElseThrow(() -> new RuntimeException("Category not found for description: " + description));
     }
 }
