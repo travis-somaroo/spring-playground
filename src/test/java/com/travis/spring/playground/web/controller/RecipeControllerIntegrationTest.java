@@ -1,5 +1,6 @@
 package com.travis.spring.playground.web.controller;
 
+import com.travis.spring.playground.exception.NotFoundException;
 import com.travis.spring.playground.model.recipe.Recipe;
 import com.travis.spring.playground.service.RecipeService;
 import org.junit.Before;
@@ -15,10 +16,11 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-public class RecipeControllerTest {
+public class RecipeControllerIntegrationTest {
 
     @Mock
     RecipeService recipeService;
@@ -35,9 +37,23 @@ public class RecipeControllerTest {
     }
 
     @Test
-    public void testGetRecipe() throws Exception {
+    public void givenRecipeId_whenMockMVC_thenResponseOK() throws Exception {
+        Recipe recipe = new Recipe();
 
-        Optional<Recipe> recipeOptional = recipeService.findById(1L);
-        when(recipeService.findById(anyLong())).thenReturn(recipeOptional);
+        recipe.setId(1L);
+
+        when(recipeService.findById(1L)).thenReturn(Optional.of(recipe));
+
+        mockMvc.perform(get("/api/recipes/{recipeId}", 1L))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").value(1L));
+    }
+
+    @Test
+    public void givenInvalidRecipeId_whenMockMVC_thenResponseNotFound() throws Exception {
+        when(recipeService.findById(100L)).thenThrow(NotFoundException.class);
+
+        mockMvc.perform(get("/api/recipes/100"))
+            .andExpect(status().isNotFound());
     }
 }

@@ -1,5 +1,6 @@
 package com.travis.spring.playground.service;
 
+import com.travis.spring.playground.exception.NotFoundException;
 import com.travis.spring.playground.model.recipe.Recipe;
 import com.travis.spring.playground.repository.RecipeRepository;
 import lombok.AllArgsConstructor;
@@ -22,7 +23,11 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Optional<Recipe> findById(Long recipeId) {
-        return recipeRepository.findById(recipeId);
+        Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
+        if (recipeOptional.isEmpty()) {
+            throw new NotFoundException("Recipe Not Found");
+        }
+        return recipeOptional;
     }
 
     @Override
